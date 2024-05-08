@@ -15,12 +15,6 @@
 
 <p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
 
-<!-- @if(isset($firstName) && isset($lastName))
-  <p>Received Data:</p>
-  <p>First Name: {{ $firstName }}</p>
-  <p>Last Name: {{ $lastName }}</p>
-@endif -->
-
 </body>
 </html>
 
