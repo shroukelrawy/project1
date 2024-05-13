@@ -7,12 +7,14 @@ use App\Models\Client;
 
 class Clientcontroller extends Controller
 {
+    private $columns = ['clientName','phone', 'email','website'];
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $clients=Client::get();
+        return view('clients',compact('clients'));
     }
 
     /**
@@ -20,21 +22,23 @@ class Clientcontroller extends Controller
      */
     public function create()
     {
-        return view('form2');
+        return view('addclient');
     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-    $client = new Client() ;
-    $client->clientName =$request->clientName;
-    $client->phone = $request->phone;
-    $client->email=$request->email;
-    $client->website =$request->website;
-    $client->save ();
+    // $client = new Client() ;
+    // $client->clientName =$request->clientName;
+    // $client->phone = $request->phone;
+    // $client->email=$request->email;
+    // $client->website =$request->website;
+    // $client->save ();
+    Client::create($request->only($this->columns));
+    return redirect('clients');
   
-return 'inserted Successfully';
+    // return 'inserted Successfully';
     }
 
     /**

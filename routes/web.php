@@ -7,10 +7,13 @@ use App\Http\Controllers\Studentcontroller;
 
 
 Route::post('insertStudent',[StudentController::class,'store'])->name('insertStudent');
-Route::get('dataentryform',[StudentController::class,'create']);
+Route::get('addstudent',[StudentController::class,'create'])->name('addStudent');
+Route::get('students',[StudentController::class,'index'])->name('students');
+
 
 Route::post('insertClient',[ClientController::class,'store'])->name('insertClient');
-Route::get('form2',[ClientController::class,'create']);
+Route::get('addclient',[ClientController::class,'create'])->name('addClient');
+Route::get('clients',[ClientController::class,'index'])->name('clients');
 
 Route::get('test20',[Mycontroller::class,'my_data']);
 
