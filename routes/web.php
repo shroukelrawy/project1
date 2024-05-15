@@ -9,11 +9,19 @@ use App\Http\Controllers\Studentcontroller;
 Route::post('insertStudent',[StudentController::class,'store'])->name('insertStudent');
 Route::get('addstudent',[StudentController::class,'create'])->name('addStudent');
 Route::get('students',[StudentController::class,'index'])->name('students');
+Route::get('editstudent/{id}',[StudentController::class,'edit'])->name('editstudent');
+Route::put('updatestudent/{id}',[StudentController::class,'update'])->name('updatestudent');
+Route::get('showstudent/{id}',[StudentController::class,'show'])->name('showstudent');
+Route::delete('deletestudent',[StudentController::class,'destroy'])->name('deletestudent');
 
 
 Route::post('insertClient',[ClientController::class,'store'])->name('insertClient');
 Route::get('addclient',[ClientController::class,'create'])->name('addClient');
 Route::get('clients',[ClientController::class,'index'])->name('clients');
+Route::get('editclient/{id}',[ClientController::class,'edit'])->name('editclients');
+Route::put('updateclient/{id}',[ClientController::class,'update'])->name('updateclients');
+Route::get('showclient/{id}',[ClientController::class,'show'])->name('showclient');
+Route::delete('delclient',[ClientController::class,'destroy'])->name('delclient');
 
 Route::get('test20',[Mycontroller::class,'my_data']);
 

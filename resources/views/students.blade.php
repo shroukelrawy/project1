@@ -19,6 +19,10 @@
       <tr>
         <th>Student Name</th>
         <th>Age</th>
+        <th>Edit</th>
+        <th>Show</th>
+        <th>Delete</th>
+
       </tr>
     </thead>
     <tbody>
@@ -27,11 +31,33 @@
       <tr>
         <td>{{ $student->studentName }}</td>
         <td>{{ $student->age }}</td>
+        <td><a href="{{route('editstudent',$student->id)}}">Edit</a></td>
+        <td><a href="{{route('showstudent',$student->id)}}">Show</a></td>
+        <td>
+         <form  id="deleteForm{{ $student->id }}" action="{{route('deletestudent')}}" method="post">
+          @csrf
+          @method('DELETE')
+            <input type="hidden" value="{{$student->id}}" name="id">
+            <button type="button" class="btn btn-danger" onclick="deleteStudent('{{ $student->id }}')"> Delete
+            </button>
+            <!-- <input type="submit" value="Delete"> -->
+          </form>
+        </td>
       </tr>
       @endforeach
     </tbody>
   </table>
 </div>
-
+<script>
+  function deleteStudent(id) {
+    if (confirm("Are you sure you want to delete this student?")) {
+    
+      document.getElementById('deleteForm' + id).submit();
+    } else {
+      console.log("Deletion canceled.");
+    }
+  }
+</script>
 </body>
 </html>
+
