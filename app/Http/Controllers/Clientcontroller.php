@@ -35,7 +35,22 @@ class Clientcontroller extends Controller
     // $client->email=$request->email;
     // $client->website =$request->website;
     // $client->save ();
-    Client::create($request->only($this->columns));
+    
+    $data = $request->validate([
+    'clientName' => 'required|string|max:100|min:5',
+    'phone' => 'required|string|min:11|unique:users,phone',  
+    'email' => 'required|email:rfc|unique:users,email', 
+    'website' => 'required|url',
+     ]);
+
+    // $data=$request->validate([
+    //     'clientName'=>'required',
+    //     'phone'=>'string',
+    //     'email'=>'string',
+    //     'website'=>'string',
+    // ]);
+
+    Client::create($data);
     return redirect('clients');
   
     // return 'inserted Successfully';
@@ -64,8 +79,16 @@ class Clientcontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Client::where('id', $id)->update($request->only($this->columns));
+        $data = $request->validate([
+            'clientName' => 'required|string|max:100|min:5',
+            'phone' => 'required|string|min:11|unique:clients,phone,' . $id,  
+            'email' => 'required|email:rfc|unique:clients,email,' . $id, 
+            'website' => 'required|url',
+        ]);
+        Client::where('id', $id)->update($data);
+        // Client::where('id', $id)->update($request->only($this->columns));
         return redirect('clients');
+
     }
 
     /**
@@ -78,4 +101,23 @@ class Clientcontroller extends Controller
         return redirect('clients');
 
     }
+    public function force(Request $request)
+    {
+        $id=$request->id;
+        Client::where('id', $id)->forceDelete();
+        return redirect('clients');
+
+    }
+    public function trash()
+    {
+        $trashed=Client::onlyTrashed()->get();
+        return view('trashclient', compact('trashed'));  
+
+    } 
+    public function restore(string $id)
+    {
+        Client::where('id', $id)->restore();
+        return redirect('clients');
+
+    }   
 }

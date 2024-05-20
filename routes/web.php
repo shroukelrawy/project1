@@ -13,6 +13,9 @@ Route::get('editstudent/{id}',[StudentController::class,'edit'])->name('editstud
 Route::put('updatestudent/{id}',[StudentController::class,'update'])->name('updatestudent');
 Route::get('showstudent/{id}',[StudentController::class,'show'])->name('showstudent');
 Route::delete('deletestudent',[StudentController::class,'destroy'])->name('deletestudent');
+Route::delete('forcedeletestudent',[StudentController::class,'force'])->name('forcedeletestudent');
+Route::get('trashstudent',[StudentController::class,'trash'])->name('trashstudent');
+Route::get('restorestudent/{id}',[StudentController::class,'restore'])->name('restorestudent');
 
 
 Route::post('insertClient',[ClientController::class,'store'])->name('insertClient');
@@ -22,6 +25,10 @@ Route::get('editclient/{id}',[ClientController::class,'edit'])->name('editclient
 Route::put('updateclient/{id}',[ClientController::class,'update'])->name('updateclients');
 Route::get('showclient/{id}',[ClientController::class,'show'])->name('showclient');
 Route::delete('delclient',[ClientController::class,'destroy'])->name('delclient');
+Route::delete('forcedelete',[ClientController::class,'force'])->name('forcedelete');
+Route::get('trashclient',[ClientController::class,'trash'])->name('trashclient');
+Route::get('restoreclient/{id}',[ClientController::class,'restore'])->name('restoreclient');
+
 
 Route::get('test20',[Mycontroller::class,'my_data']);
 

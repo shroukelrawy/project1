@@ -18,11 +18,22 @@
 <form action="{{ route('updatestudent',[$student->id]) }}" method="post">
     @csrf
     @method('put')
-    <label for="studentName">Student Name</label><br>
-    <input type="text" id="studentName" name="studentName" class="form-control" value="{{$student->studentName}}"><br>
-    <label for="age">Age</label><br>
-    <input type="text" id="age" name="age" class="form-control" value="{{$student->age}}"><br>
-    <br><br>
+    <div class="form-group">
+            <label for="studentName">Student Name</label><br>
+            <input type="text" id="studentName" name="studentName" class="form-control" value="{{$student->studentName}}"><br>
+            @error('studentName')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+    </div>
+
+    <div class="form-group">
+            <label for="age">Age</label><br>
+            <input type="text" id="age" name="age" class="form-control" value="{{$student->age}}"><br>
+            @error('age')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+    </div>
+    <br>
     <input type="submit" value="submit">
 </form> 
 </div>

@@ -16,10 +16,22 @@
 <h2>New Student</h2>
 <form action="{{ route('insertStudent') }}" method="post">
     @csrf
-    <label for="studentName" >Student Name</label><br>
-    <input type="text" id="studentName" name="studentName" value="" class="form-control"><br>
-    <label for="age">Age</label><br>
-    <input type="number" id="age" name="age" value="" class="form-control"><br><br>
+    <div class="form-group">
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" name="studentName" value="{{ old('studentName') }}" class="form-control">
+            @error('studentName')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+    </div>
+
+    <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" value="{{ old('age') }}" class="form-control">
+            @error('age')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+    </div>
+    
     <input type="submit" value="submit">
 </form> 
 </div>
