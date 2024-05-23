@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Client;
+use Illuminate\Support\Facades\Storage;
 
 class Clientcontroller extends Controller
 {
-    private $columns = ['clientName','phone', 'email','website'];
+    private $columns = ['clientName','phone', 'email','website','city','active','image'];
     /**
      * Display a listing of the resource.
      */
@@ -29,19 +30,30 @@ class Clientcontroller extends Controller
      */
     public function store(Request $request)
     {
+
     // $client = new Client() ;
     // $client->clientName =$request->clientName;
     // $client->phone = $request->phone;
     // $client->email=$request->email;
     // $client->website =$request->website;
     // $client->save ();
-    
+    // $message=[
+    //     'clientName.required'=>'The Client name is missed,please insert',
+    //     'clientName.min'=>'Length less than 5,please insert more char',       
+    //     'clientName.max'=>'Length less than 100,please insert less char'
+
+    // ];
+
+    $message=$this->errMsg();
     $data = $request->validate([
     'clientName' => 'required|string|max:100|min:5',
-    'phone' => 'required|string|min:11|unique:users,phone',  
-    'email' => 'required|email:rfc|unique:users,email', 
-    'website' => 'required|url',
-     ]);
+    'phone' => 'required|string|min:11', 
+    'email' => 'required|email:rfc', 
+    'website' => 'required',
+    'city' => 'required|max:30',
+    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
+     ],$message);
 
     // $data=$request->validate([
     //     'clientName'=>'required',
@@ -50,10 +62,21 @@ class Clientcontroller extends Controller
     //     'website'=>'string',
     // ]);
 
+    if ($request->hasFile('image')) {
+        $fileName = $request->file('image')->store('assets/images', 'public');
+        $data['image'] = $fileName;
+    }
+    // $imgExt=$request->image->getClientOriginalExtension();
+    // $fileName=time() . '.' . $imgExt;
+    // $path='assets/images';
+    // $request->image->move($path, $fileName);
+    // $data['image'] = $path . '/' . $fileName;
+
+    $data['active']=isset($request->active);
+
     Client::create($data);
     return redirect('clients');
-  
-    // return 'inserted Successfully';
+
     }
 
     /**
@@ -79,17 +102,40 @@ class Clientcontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $message=$this->errMsg();
+
         $data = $request->validate([
             'clientName' => 'required|string|max:100|min:5',
-            'phone' => 'required|string|min:11|unique:clients,phone,' . $id,  
-            'email' => 'required|email:rfc|unique:clients,email,' . $id, 
-            'website' => 'required|url',
-        ]);
-        Client::where('id', $id)->update($data);
-        // Client::where('id', $id)->update($request->only($this->columns));
-        return redirect('clients');
+            'phone' => 'required|string|min:11',
+            'email' => 'required|email:rfc',
+            'website' => 'required',
+            'city' => 'required|max:30',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+     ],$message);
 
+        // Client::where('id', $id)->update($data);
+        // // Client::where('id', $id)->update($request->only($this->columns));
+        // return redirect('clients');
+
+
+        $client = Client::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            if ($client->image && Storage::exists('public/' . $client->image)) {
+                Storage::delete('public/' . $client->image);
+            }
+
+            $path = $request->file('image')->store('images', 'public');
+            $data['image'] = $path;
+        }
+
+        $data['active'] = isset($request->active);
+
+        $client->update($data);
+
+        return redirect('clients');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -119,5 +165,16 @@ class Clientcontroller extends Controller
         Client::where('id', $id)->restore();
         return redirect('clients');
 
-    }   
+    } 
+    public function errMsg()
+    {
+       return [
+            'clientName.required'=>'The Client name is missed,please insert',
+            'clientName.min'=>'Length less than 5,please insert more char',       
+            'clientName.max'=>'Length less than 100,please insert less char'
+    
+        ];
+
+    } 
+      
 }

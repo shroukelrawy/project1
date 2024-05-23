@@ -15,7 +15,7 @@
 <div class="container" style="margin-left:20px">
 <h2>Edit client</h2>
 
-<form action="{{ route('updateclients',[$client->id]) }}" method="post">
+<form action="{{ route('updateclients',[$client->id]) }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
     
@@ -51,7 +51,36 @@
     @enderror
     </div>
   
-    <input type="submit" value="submit">
+    <div class="form-group">
+            <label for="city">City:</label><br>
+            <select name="city" id="city" class="form-control">
+                <option value="">Please Select City</option>
+                <option value="Cairo" {{ old('city', $client->city) == 'Cairo' ? 'selected' : '' }}>Cairo</option>
+                <option value="Giza" {{ old('city', $client->city) == 'Giza' ? 'selected' : '' }}>Giza</option>
+                <option value="Alex" {{ old('city', $client->city) == 'Alex' ? 'selected' : '' }}>Alex</option>
+            </select><br>
+            @error('city')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="active">Active:</label>
+            <input type="checkbox" id="active" name="active" {{ old('active', $client->active) ? 'checked' : '' }}><br>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Current Image:</label><br>
+            <img src="{{ asset('storage/' . $client->image) }}" alt="Client Image" width="100"><br>
+            <label for="image">New Image:</label><br>
+            <input type="file" id="image" name="image" class="form-control"><br>
+            @error('image')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+  
+
+    <input type="submit" class="btn btn-primary" value="submit">
 </form> 
 </div>
 </body>
