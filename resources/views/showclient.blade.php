@@ -11,8 +11,7 @@
 </head>
 <body>
 @include('includes.nav')
-     <!-- <p><img src="{{ Storage::url($client->image) }}"  alt="{{ $client->clientName }}" style="width: 200px; height:200px;"></p> -->
-     <p><img src="{{ asset('storage/' . $client->image) }}" alt="" style="width: 200px; height:200px;"></p>
+     <p><img src="{{ asset($client->image) }}" alt="" style="width: 200px; height:200px;"></p>
     <hr>
     <h2><strong>Name: </strong>{{$client->clientName}}</h2>
     <hr>

@@ -71,7 +71,7 @@
 
         <div class="form-group">
             <label for="image">Current Image:</label><br>
-            <img src="{{ asset('storage/' . $client->image) }}" alt="Client Image" width="100"><br>
+            <img src="{{ asset( $client->image) }}" alt="Client Image" width="100"><br>
             <label for="image">New Image:</label><br>
             <input type="file" id="image" name="image" class="form-control"><br>
             @error('image')

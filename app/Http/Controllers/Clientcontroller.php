@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Client;
-use Illuminate\Support\Facades\Storage;
+use App\Traits\UploadFile;
+// use Illuminate\Support\Facades\Storage;
 
 class Clientcontroller extends Controller
 {
+    use UploadFile;
+    
     private $columns = ['clientName','phone', 'email','website','city','active','image'];
     /**
      * Display a listing of the resource.
@@ -51,7 +54,7 @@ class Clientcontroller extends Controller
     'email' => 'required|email:rfc', 
     'website' => 'required',
     'city' => 'required|max:30',
-    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    'image' => 'required',
 
      ],$message);
 
@@ -62,15 +65,19 @@ class Clientcontroller extends Controller
     //     'website'=>'string',
     // ]);
 
-    if ($request->hasFile('image')) {
-        $fileName = $request->file('image')->store('assets/images', 'public');
-        $data['image'] = $fileName;
-    }
+    // if ($request->hasFile('image')) {
+    //     $fileName = $request->file('image')->store('assets/images', 'public');
+    //     $data['image'] = $fileName;
+    // }
+
     // $imgExt=$request->image->getClientOriginalExtension();
     // $fileName=time() . '.' . $imgExt;
     // $path='assets/images';
     // $request->image->move($path, $fileName);
     // $data['image'] = $path . '/' . $fileName;
+
+    $fileName=$this->upload($request->image,'assets/images');
+    $data['image']=$fileName;
 
     $data['active']=isset($request->active);
 
@@ -110,24 +117,37 @@ class Clientcontroller extends Controller
             'email' => 'required|email:rfc',
             'website' => 'required',
             'city' => 'required|max:30',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'sometimes|image',
+
      ],$message);
+
+    $client = Client::findOrFail($id);
+
+     if ($request->hasFile('image')) {             //when use sometimes in image
+        // $imgExt=$request->image->getClientOriginalExtension();
+        // $fileName=time() . '.' . $imgExt;
+        // $path='assets/images';
+        // $request->image->move($path, $fileName);
+
+        $fileName=$this->upload($request->image,'assets/images');
+        $data['image']= $fileName;
+     }
 
         // Client::where('id', $id)->update($data);
         // // Client::where('id', $id)->update($request->only($this->columns));
         // return redirect('clients');
 
 
-        $client = Client::findOrFail($id);
 
-        if ($request->hasFile('image')) {
-            if ($client->image && Storage::exists('public/' . $client->image)) {
-                Storage::delete('public/' . $client->image);
-            }
+        // if ($request->hasFile('image')) {              //when use nullable in image
+        //     if ($client->image && Storage::exists('public/' . $client->image)) {
+        //         Storage::delete('public/' . $client->image);
+        //     }
 
-            $path = $request->file('image')->store('images', 'public');
-            $data['image'] = $path;
-        }
+        //     $path = $request->file('image')->store('images', 'public');
+        //     $data['image'] = $path;
+        // }
 
         $data['active'] = isset($request->active);
 

@@ -18,6 +18,7 @@ Route::get('trashstudent',[StudentController::class,'trash'])->name('trashstuden
 Route::get('restorestudent/{id}',[StudentController::class,'restore'])->name('restorestudent');
 
 
+
 Route::post('insertClient',[ClientController::class,'store'])->name('insertClient');
 Route::get('addclient',[ClientController::class,'create'])->name('addClient');
 Route::get('clients',[ClientController::class,'index'])->name('clients');
@@ -33,7 +34,7 @@ Route::get('restoreclient/{id}',[ClientController::class,'restore'])->name('rest
 Route::get('test20',[Mycontroller::class,'my_data']);
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('stacked');
 });
 
 /*Route::post('recform1',function(){

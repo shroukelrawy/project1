@@ -8,8 +8,13 @@
       <li class="active"><a href="{{ route('addClient') }}">Add</a></li>
       <li><a href="{{ route('clients') }}">clients</a></li>
       <li><a href="{{route('trashclient')}}">Trashed</a></li>
-      <li><a href="#">Page 3</a></li>
-    </ul>
+      @yield('menu')
+
+       @stack('submenu')
+
+      
+    
+  </ul>
   </div>
 </nav>
 <!--end navbar -->
