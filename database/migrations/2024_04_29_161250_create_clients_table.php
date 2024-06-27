@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('phone', 25);
             $table->string('email', 100);
             $table->string('website', 100);
-            $table->string('city', 30);
             $table->boolean('active')->default(false);
+            $table->foreignId('city_id')->constrained('cities');
             $table->string('image', 100);
             $table->softDeletes();
             $table->timestamps();
-        });
+        );
     }
 
     /**

@@ -1,88 +1,100 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Mycontroller;
+use App\Http\Controllers\MyController;
 use App\Http\Controllers\Clientcontroller;
 use App\Http\Controllers\Studentcontroller;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ContactUSController;
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    ], function(){
+Route::get("form1",[MyController::class,'info']);
 
+Route::post('insertclient', [Clientcontroller::class,'store'])->name('insertclient');
+Route::get('clientForm', [Clientcontroller::class, 'create'])->name('clientForm');
+Route::get('clients', [Clientcontroller::class, 'index'])->middleware('verified')->name('clients');
+Route::get('editClient/{id?}', [Clientcontroller::class, 'edit'])->name('editClient');
+Route::put('updateClient/{id?}', [Clientcontroller::class, 'update'])->name('updateClient');
+Route::get('showClient/{id?}', [Clientcontroller::class, 'show'])->name('showClient');
+Route::delete('deleteClient', [Clientcontroller::class, 'destroy'])->name('deleteClient');
+Route::delete('forceDeleteClient', [Clientcontroller::class, 'force'])->name('forceDeleteClient');
+Route::get('trashClient', [Clientcontroller::class, 'trash'])->name('trashClient');
+Route::get('restoreClient/{id?}', [Clientcontroller::class, 'restore'])->name('restoreClient');
+/*
+Route::post('insertstudent', [Studentcontroller::class, 'store'])->name('insertstudent');
+Route::get('studentForm', [Studentcontroller::class, 'create'])->name('studentForm');
+Route::get('students', [Studentcontroller::class, 'index'])->name('students');
+Route::get('showStudent/{id}', [Studentcontroller::class, 'show'])->name('showStudent');
+Route::get('editStudent/{id}', [Studentcontroller::class, 'edit'])->name('editStudent');
+Route::put('updateStudent/{id}', [Studentcontroller::class, 'update'])->name('updateStudent');
+Route::delete('deleteStudent/{id}', [Studentcontroller::class, 'destroy'])->name('deleteStudent');
+Route::get('trashStudent', [Studentcontroller::class, 'trash'])->name('trashStudent');
+Route::get('restoreStudent/{id?}', [Studentcontroller::class, 'restore'])->name('restoreStudent');
+Route::delete('forceDeleteStudent', [Studentcontroller::class, 'force'])->name('forceDeleteStudent');
 
-Route::post('insertStudent',[StudentController::class,'store'])->name('insertStudent');
-Route::get('addstudent',[StudentController::class,'create'])->name('addStudent');
-Route::get('students',[StudentController::class,'index'])->name('students');
-Route::get('editstudent/{id}',[StudentController::class,'edit'])->name('editstudent');
-Route::put('updatestudent/{id}',[StudentController::class,'update'])->name('updatestudent');
-Route::get('showstudent/{id}',[StudentController::class,'show'])->name('showstudent');
-Route::delete('deletestudent',[StudentController::class,'destroy'])->name('deletestudent');
-Route::delete('forcedeletestudent',[StudentController::class,'force'])->name('forcedeletestudent');
-Route::get('trashstudent',[StudentController::class,'trash'])->name('trashstudent');
-Route::get('restorestudent/{id}',[StudentController::class,'restore'])->name('restorestudent');
+Route::get('teachers', [TeacherController::class, 'index'])->name('teachers');
+Route::get('showTeacher/{id}', [TeacherController::class, 'show'])->name('showTeacher');
+Route::get('editTeacher/{id}', [TeacherController::class, 'edit'])->name('editTeacher');
+Route::delete('deleteTeacher/{id}', [TeacherController::class, 'destroy'])->name('deleteTeacher');
 
+Route::get('mysession', [MyController::class, 'myVal']);
+Route::get('oncesession', [MyController::class, 'onceVal']);
+Route::get('restoresession', [MyController::class, 'restoreVal']);
+Route::get('deletesession', [MyController::class, 'deleteVal']);
+Route::get('sendclientmail', [MyController::class, 'sendClientMail']);*/
 
-
-Route::post('insertClient',[ClientController::class,'store'])->name('insertClient');
-Route::get('addclient',[ClientController::class,'create'])->name('addClient');
-Route::get('clients',[ClientController::class,'index'])->name('clients');
-Route::get('editclient/{id}',[ClientController::class,'edit'])->name('editclients');
-Route::put('updateclient/{id}',[ClientController::class,'update'])->name('updateclients');
-Route::get('showclient/{id}',[ClientController::class,'show'])->name('showclient');
-Route::delete('delclient',[ClientController::class,'destroy'])->name('delclient');
-Route::delete('forcedelete',[ClientController::class,'force'])->name('forcedelete');
-Route::get('trashclient',[ClientController::class,'trash'])->name('trashclient');
-Route::get('restoreclient/{id}',[ClientController::class,'restore'])->name('restoreclient');
-
-
-Route::get('test20',[Mycontroller::class,'my_data']);
-
-Route::get('/', function () {
-    return view('stacked');
-});
-
-/*Route::post('recform1',function(){
-    return 'Data recieved';
-})->name('recieveform1');*/
-
-/*Route::get('shrouk/{id?}', function ($id=0) {
-    return 'welcome to my website ' . $id;
-})->whereNumber('id');*/
-//->where(['id' => '[0-9]+']) 
-
-// Route::get('course/{name}', function ($name) {
-//     return 'My name is: ' . $name;
-// })->whereAlpha('name');
-
-// Route::get('project/{name}', function ($name) {
-//     return 'My name is: ' . $name;
-// })->whereIn('name',['Shrouk','Omar','Aly']);
-
-// Route::prefix('cars')->group(function(){
-//     Route::get('bmw',function(){
-//         return "Category is BMW";
-//     });
-//     Route::get('mercedis',function(){
-//         return "Category is Mercedis";
-//     });
-
-// });
-
-/*Route::fallback(function(){
-   // return 'The required is not found';
-    return redirect('/');
-});*/
-
-/*Route::get('test',function(){
-    return view('test');
-});
+/*Route::get('contact-us', 'ContactUSController@contactUS');
+Route::post('contact-us', ['as'=>'contactus.store','uses'=>'ContactUSController@contactUSPost']);
 */
 
-
-// this part for form1 and task
-Route::post('recform1',[Mycontroller::class,'receiveForm1'])->name('recieveform1');
-
-Route::get('page2', function () {
-    return view('page2');
-})->name('page2');
-
-Route::get('form1',function(){
-    return view('form1');
+Route::get('contact-us', [ContactUSController::class, 'contactUS'])->name('contactus.get');
+Route::post('contact-us', [ContactUSController::class, 'contactUSPost'])->name('contactus.store');
+Route::get('/', function () {
+    return view('welcome');
 });
-//the end of the form1 and task
+/*Route::get('May/{id?}', function ($id =0) {
+    return ('welcome to the fist page'. $id);
+})->whereNumber('id');
+#->where(['id' => '[0-9]+']);*/
+/*Route::get('course/{name}', function ($name) {
+    return ('My name is '. $name);
+})->whereAlpha('name');*/
+/*Route::get('course/{name}', function ($name) {
+    return ('My name is '. $name);
+})->whereIn('name',['may','mohamed','doaa','safaa']);*/
+
+Route::prefix('cars')->group(function() {
+    Route::get('bmw', function () {
+        return 'category is BMW';
+    });
+    Route::get('mercedes', function () {
+        return 'category is Mercedes';
+    });
+});
+/*
+Route::fallback(function() {
+   // return "the page not found";
+   return redirect('/');
+});*/
+/*Route::get('test',function(){
+    return view("test");
+
+});*/
+/*
+Route::get('form1', function () {
+    return view("form1");
+});
+*/
+Route::post('recform1', function () {
+    $fname = request('fname'); 
+    $lname = request('lname'); 
+    return $fname . ' ' . $lname; 
+})->name('receiveform1');
+
+Auth::routes(['verify'=>true]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    });

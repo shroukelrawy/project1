@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Trashed Client</title>
+  <title>Trashed</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
 </head>
 <body>
 
-@include('includes.nav')
-
+@include('include.nav')
 <div class="container">
-  <h2>Trashed Client</h2>
+  <h2>Trashed</h2>
+  <!-- Display Success Message -->
+  @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+  @endif
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Client Name</th>
+        <th>Client name</th>
         <th>Phone</th>
         <th>Email</th>
         <th>Website</th>
-        <th>Restore</th>
+        <th>restore</th>
+        <th>Show</th>
         <th>Delete</th>
-
-
       </tr>
     </thead>
     <tbody>
-        @foreach ($trashed as $client)
-    
+       @foreach ($trashed as $client)
+
       <tr>
-        <td>{{ $client->clientName }}</td>
-        <td>{{ $client->phone }}</td>
-        <td>{{ $client->email }}</td>
-        <td>{{ $client->website }}</td>
-        <td><a href="{{route('restoreclient',$client->id)}}">Restore</a></td>
+        <td>{{$client->clientname}}</td>
+        <td>{{$client->phone}}</td>
+        <td>{{$client->email}}</td>
+        <td>{{$client->website}}</td>
+        <td><a href="{{route('restoreClient',$client->id)}}">Restore</td>
+        <td><a href="{{route('showClient',$client->id)}}">Show</td>
         <td>
-         <form action="{{route('forcedelete')}}" method="post">
-          @csrf
-          @method('DELETE')
-            <input type="hidden" value="{{$client->id}}" name="id">
-            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this client?')">
+        <form action="{{ route('forceDeleteClient') }}" method="POST">
+             @csrf
+             @method('DELETE')
+            <input type="hidden" name="id" value="{{ $client->id }}">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to permanently delete this client?');">Force Delete</button>
           </form>
-        </td>
+       </td>
+
+
       </tr>
-      @endforeach
+       @endforeach
     </tbody>
   </table>
 </div>
