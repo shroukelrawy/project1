@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('image', 100);
             $table->softDeletes();
             $table->timestamps();
-        );
+        }); // Fixed: added closing parenthesis here
     }
 
     /**
@@ -31,6 +31,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('clients');
-
     }
 };
